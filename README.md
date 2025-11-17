@@ -59,3 +59,28 @@ Setelah proses supernetting selesai, kami berhasil merangkum semua jaringan menj
 
 ## Menghitung Subnet
 
+### Perhitungan Detail Subnet A18
+Berikut adalah langkah-langkah terperinci untuk menentukan parameter jaringan (Prefix, Network ID, Broadcast, dan Range IP) untuk Subnet A18 di Sayap Bawah:
+
+### 1. Menentukan Prefix (CIDR)
+
+Langkah awal adalah mengidentifikasi prefix CIDR yang paling efisien berdasarkan kebutuhan host. <br>
+
+Kebutuhan Host: 875 Host.
+
+Pencarian Bit Host ($n$): Dengan menggunakan rumus $\text{Jumlah Host} = 2^n - 2$, kita mencari nilai $n$ (jumlah bit host) yang memenuhi kebutuhan.
+<br>
+- $2^9 = 512$ (Tidak cukup)<br>
+- $2^{10} = 1024$ (Cukup)<br>
+- Hasil: Karena $n = 10$, maka Prefix CIDR dihitung sebagai $32 - 10$, menghasilkan /22.
+
+### 2. Menghitung Block Size (Total IP)<br>
+Block size menentukan berapa banyak alamat IP total yang dikonsumsi oleh subnet ini dan berapa langkah lompatan yang akan terjadi pada oktet tertentu.Total IP: Rumus $2^{32-\text{Prefix}} = 2^{32-22} = 2^{10} = 1024$ IP.Lompatan Oktet: Karena 1024 IP lebih besar dari 256 (nilai maksimum satu oktet), block size ini akan mempengaruhi oktet ketiga. Pembagian $1024 / 256$ menghasilkan 4. Artinya, subnet ini akan memakan 4 angka pada oktet ketiga.
+
+### 3. Penentuan Network ID (NID) & Broadcast<br>
+Dengan mengetahui block size (4), kita dapat mengalokasikan alamat.Network ID (NID) Awal: Karena A18 adalah subnet pertama di blok 10.91.0.0 (Sayap Bawah), NID dimulai dari 10.91.0.0.Batas Subnet Berikutnya: Batas atas (atau NID subnet berikutnya) dihitung dengan menambahkan block size (4) ke oktet ketiga NID awal: $0 + 4 = 4$. Jadi, subnet berikutnya dimulai pada 10.91.4.0.Broadcast Address: Alamat broadcast adalah alamat terakhir dalam blok, yaitu satu angka sebelum batas subnet berikutnya. Jadi, broadcast address untuk A18 adalah 10.91.3.255.
+
+### 4. Menentukan Range IP Usable
+Range IP yang dapat digunakan oleh host (selain NID dan broadcast).
+- IP Pertama (Gateway): NID ditambah 1, yaitu 10.91.0.1.<br>
+- IP Terakhir (Host Terakhir): Broadcast Address dikurangi 1, yaitu 10.91.3.254.
