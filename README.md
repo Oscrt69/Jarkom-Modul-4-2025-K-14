@@ -25,11 +25,11 @@ Pendekatan subnetting yang digunakan berhasil mengidentifikasi 23 segmen jaringa
 
 ### Topologi GNS3
 
+Topologi dibagi menjadi 3 bagian daerah utama yaitu bagian sayap bawah, sayap kanan, dan sayap kiri.
+
 <img width="1913" height="1028" alt="A1 - Presentation - Google Chrome 11_17_2025 11_46_52 PM" src="https://github.com/user-attachments/assets/95176b89-11ce-4263-9e23-220e2ef7c182" />
 
-### Gabungan - CIDR
-
-<img width="1940" height="829" alt="gabungan" src="https://github.com/user-attachments/assets/09764500-fd80-4d20-89b4-70b2d997f931" />
+Untuk meningkatkan efisiensi proses routing, dilakukan agregasi rute (supernetting). Metode ini mengkonsolidasikan beberapa subnet yang lebih kecil menjadi blok alamat yang lebih luas. Konsolidasi dilaksanakan secara bertahap, dimulai dari tingkat terendah topologi (bottom-up), seperti penggabungan subnet berdekatan A22 dengan A23, dan A9 dengan A11, untuk membentuk supernet parsial.
 
 ### Sayap Bawah 
 
@@ -46,4 +46,16 @@ Pendekatan subnetting yang digunakan berhasil mengidentifikasi 23 segmen jaringa
 ### Gabungan Ketiga Sayap
 
 <img width="1806" height="233" alt="gabungan3" src="https://github.com/user-attachments/assets/6f3f248f-d3ac-43a8-9d1b-d33683878b73" />
+
+Setelah proses supernetting selesai, kami berhasil merangkum semua jaringan menjadi tiga Blok Supernet Mayor. Rangkuman ini akan diinput ke router utama (Amonsul) untuk mengurangi jumlah entri dalam tabel routing:
+
+> Blok /20 (10.91.0.0) mencakup 2318 host di Sayap Bawah.
+
+> Blok /21 (10.91.16.0) mencakup 1102 host di Sayap Kanan.
+
+> Blok /22 (10.91.24.0) mencakup 610 host di Sayap Kiri.
+
+---
+
+## Menghitung Subnet
 
