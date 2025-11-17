@@ -1,0 +1,453 @@
+1A. Konfigurasi Node (Jalankan di terminal masing-masing)
+
+Di Node Amonsul:
+
+# 1. Hapus konfigurasi lama
+ip -4 addr flush dev eth1; ip -4 addr flush dev eth2; ip -4 addr flush dev eth3; ip route flush cache
+
+# 2. Atur IP
+ip addr add 192.218.15.201/30 dev eth3 # Ke Fornost (A1)
+ip addr add 192.218.15.205/30 dev eth1 # Ke Minastir (A6)
+ip addr add 192.218.15.217/30 dev eth2 # Ke Eregion (A13)
+
+# 3. Atur Rute Statis (KE SEMUA SUBNET)
+# via Fornost (192.218.15.202)
+ip route add 192.218.15.176/29 via 192.218.15.202 # A2
+ip route add 192.218.8.0/23 via 192.218.15.202    # A3
+ip route add 192.218.15.128/27 via 192.218.15.202 # A4
+ip route add 192.218.15.0/26 via 192.218.15.202    # A5
+# via Minastir (192.218.15.206)
+ip route add 192.218.15.208/30 via 192.218.15.206 # A7
+ip route add 192.218.15.212/30 via 192.218.15.206 # A8
+ip route add 192.218.15.184/29 via 192.218.15.206 # A9
+ip route add 192.218.15.64/26 via 192.218.15.206  # A10
+ip route add 192.218.15.192/29 via 192.218.15.206 # A11
+ip route add 192.218.0.0/22 via 192.218.15.206    # A12
+# via Eregion (192.218.15.218)
+ip route add 192.218.14.0/25 via 192.218.15.218    # A14
+ip route add 192.218.15.220/30 via 192.218.15.218 # A15
+ip route add 192.218.15.224/30 via 192.218.15.218 # A16
+ip route add 192.218.15.228/30 via 192.218.15.218 # A17
+ip route add 192.218.4.0/22 via 192.218.15.218    # A18
+ip route add 192.218.14.128/25 via 192.218.15.218 # A19
+ip route add 192.218.15.160/28 via 192.218.15.218 # A20
+ip route add 192.218.15.232/30 via 192.218.15.218 # A21
+ip route add 192.218.10.0/23 via 192.218.15.218   # A22
+ip route add 192.218.12.0/23 via 192.218.15.218   # A23
+
+
+Di Node Fornost:
+
+# 1. Hapus konfigurasi lama
+ip -4 addr flush dev eth0; ip -4 addr flush dev eth1; ip route flush cache
+
+# 2. Atur IP
+ip addr add 192.218.15.202/30 dev eth0 # Ke Amonsul (A1)
+ip addr add 192.218.15.177/29 dev eth1 # Gateway Switch4 (A2)
+
+# 3. Atur Rute Default & Statis
+ip route add default via 192.218.15.201 # Rute default ke Amonsul
+ip route add 192.218.8.0/23 via 192.218.15.178    # A3 via Valinor
+ip route add 192.218.15.128/27 via 192.218.15.179 # A4 via Valmar
+ip route add 192.218.15.0/26 via 192.218.15.179    # A5 via Valmar
+
+
+Di Node Minastir:
+
+# 1. Hapus konfigurasi lama
+ip -4 addr flush dev eth0; ip -4 addr flush dev eth1; ip -4 addr flush dev eth2; ip route flush cache
+
+# 2. Atur IP
+ip addr add 192.218.15.206/30 dev eth1 # Ke Amonsul (A6)
+ip addr add 192.218.15.209/30 dev eth0 # Ke Amroth (A7)
+ip addr add 192.218.15.213/30 dev eth2 # Ke Anor (A8)
+
+# 3. Atur Rute Default & Statis
+ip route add default via 192.218.15.205 # Rute default ke Amonsul
+ip route add 192.218.15.184/29 via 192.218.15.210 # A9 via Amroth
+ip route add 192.218.15.64/26 via 192.218.15.210  # A10 via Amroth
+ip route add 192.218.15.192/29 via 192.218.15.210 # A11 via Amroth
+ip route add 192.218.0.0/22 via 192.218.15.214    # A12 via Anor
+
+
+Di Node Eregion:
+
+# 1. Hapus konfigurasi lama
+ip -4 addr flush dev eth0; ip -4 addr flush dev eth1; ip -4 addr flush dev eth2; ip route flush cache
+
+# 2. Atur IP
+ip addr add 192.218.15.218/30 dev eth2 # Ke Amonsul (A13)
+ip addr add 192.218.14.1/25 dev eth0   # Gateway Switch8 (A14)
+ip addr add 192.218.15.221/30 dev eth1 # Ke Numenor (A15)
+
+# 3. Atur Rute Default & Statis
+ip route add default via 192.218.15.217 # Rute default ke Amonsul
+ip route add 192.218.15.224/30 via 192.218.15.222 # A16
+ip route add 192.218.15.228/30 via 192.218.15.222 # A17
+ip route add 192.218.4.0/22 via 192.218.15.222    # A18
+ip route add 192.218.14.128/25 via 192.218.15.222 # A19
+ip route add 192.218.15.160/28 via 192.218.15.222 # A20
+ip route add 192.218.15.232/30 via 192.218.15.222 # A21
+ip route add 192.218.10.0/23 via 192.218.15.222   # A22
+ip route add 192.218.12.0/23 via 192.218.15.222   # A23
+
+
+1B. Pengujian Inti
+
+(PERIKSA BUG GNS3!)
+
+Dari Amonsul:
+
+ping 192.218.15.202 -c 3 (Tes Fornost. Jika gagal, reset kabel Amonsul eth3 <-> Fornost eth0)
+
+ping 192.218.15.206 -c 3 (Tes Minastir)
+
+ping 192.218.15.218 -c 3 (Tes Eregion)
+
+Dari Fornost:
+
+ping 192.218.15.201 -c 3 (Tes Amonsul)
+
+ping 192.218.15.206 -c 3 (Tes Minastir)
+
+ping 192.218.15.218 -c 3 (Tes Eregion)
+
+Dari Minastir:
+
+ping 192.218.15.202 -c 3 (Tes Fornost)
+
+Dari Eregion:
+
+ping 192.218.15.202 -c 3 (Tes Fornost)
+
+(Kita tahu ini sudah berhasil setelah perbaikan bug GNS3)
+
+Langkah 2: Konfigurasi Area Kiri (Cabang Fornost)
+
+Fokus: Mengkonfigurasi Valinor, Valmar, dan klien uji Shadow.
+
+Di Node Valinor:
+
+ip -4 addr flush dev eth0; ip -4 addr flush dev eth1; ip route flush cache
+ip addr add 192.218.15.178/29 dev eth0 # Ke Switch4 (A2)
+ip addr add 192.218.8.1/23 dev eth1    # Gateway Switch5 (A3)
+ip route add default via 192.218.15.177 # Default ke Fornost
+
+
+Di Node Valmar:
+
+ip -4 addr flush dev eth0; ip -4 addr flush dev eth1; ip -4 addr flush dev eth2; ip route flush cache
+ip addr add 192.218.15.179/29 dev eth0 # Ke Switch4 (A2)
+ip addr add 192.218.15.129/27 dev eth1 # Gateway Switch6 (A4)
+ip addr add 192.218.15.1/26 dev eth2   # Gateway Switch7 (A5)
+ip route add default via 192.218.15.177 # Default ke Fornost
+
+
+Di Node Shadow (Klien Uji):
+
+ip -4 addr flush dev eth0; ip route flush cache
+ip addr add 192.218.8.2/23 dev eth0    # Klien di A3
+ip route add default via 192.218.8.1 # Default ke Valinor
+
+
+2B. Pengujian Ujung-ke-Ujung (dari Shadow)
+
+ping 192.218.8.1 -c 3    # Ping Gateway (Valinor)
+ping 192.218.15.201 -c 3 # Ping Hub (Amonsul)
+ping 192.218.15.206 -c 3 # Ping Area Kanan (Minastir)
+ping 192.218.15.218 -c 3 # Ping Area Tengah (Eregion)
+
+
+Langkah 3: Konfigurasi Area Kanan (Cabang Minastir)
+
+Fokus: Mengkonfigurasi semua router dan klien di bawah Minastir.
+
+Di Node Amroth:
+
+ip -4 addr flush dev eth0; ip -4 addr flush dev eth1; ip route flush cache
+ip addr add 192.218.15.210/30 dev eth0 # Ke Minastir (A7)
+ip addr add 192.218.15.185/29 dev eth1 # Gateway Switch1 (A9)
+ip route add default via 192.218.15.209 # Default ke Minastir
+ip route add 192.218.15.64/26 via 192.218.15.186 # A10 via Morgoth
+ip route add 192.218.15.192/29 via 192.218.15.187 # A11 via Throne
+
+
+Di Node Anor:
+
+ip -4 addr flush dev eth0; ip -4 addr flush dev eth1; ip route flush cache
+ip addr add 192.218.15.214/30 dev eth0 # Ke Minastir (A8)
+ip addr add 192.218.0.1/22 dev eth1    # Gateway Switch3 (A12)
+ip route add default via 192.218.15.213 # Default ke Minastir
+
+
+Di Node Morgoth:
+
+ip -4 addr flush dev eth0; ip -4 addr flush dev eth1; ip route flush cache
+ip addr add 192.218.15.186/29 dev eth0 # Ke Switch1 (A9)
+ip addr add 192.218.15.65/26 dev eth1  # Gateway Switch2 (A10)
+ip route add default via 192.218.15.185 # Default ke Amroth
+
+
+Di Node Throne:
+
+ip -4 addr flush dev eth1; ip -4 addr flush dev eth2; ip route flush cache
+ip addr add 192.218.15.187/29 dev eth2 # Ke Switch1 (A9)
+ip addr add 192.218.15.193/29 dev eth1 # Gateway Erebor (A11)
+ip route add default via 192.218.15.185 # Default ke Amroth
+
+
+Klien-klien Area Kanan:
+
+Di Node Erebor (Klien Uji):
+
+ip -4 addr flush dev eth0; ip route flush cache
+ip addr add 192.218.15.194/29 dev eth0 # Klien di A11
+ip route add default via 192.218.15.193 # Default ke Throne
+
+
+Di Node Erendis:
+
+ip -4 addr flush dev eth0; ip route flush cache
+ip addr add 192.218.15.66/26 dev eth0 # Klien di A10
+ip route add default via 192.218.15.65 # Default ke Morgoth
+
+
+Di Node Elrond:
+
+ip -4 addr flush dev eth0; ip route flush cache
+ip addr add 192.218.15.67/26 dev eth0 # Klien di A10
+ip route add default via 192.218.15.65 # Default ke Morgoth
+
+
+Di Node Beacon:
+
+ip -4 addr flush dev eth0; ip route flush cache
+ip addr add 192.218.0.2/22 dev eth0    # Klien di A12
+ip route add default via 192.218.0.1 # Default ke Anor
+
+
+Di Node Silmarils:
+
+ip -4 addr flush dev eth0; ip route flush cache
+ip addr add 192.218.0.3/22 dev eth0    # Klien di A12
+ip route add default via 192.218.0.1 # Default ke Anor
+
+
+3B. Pengujian Ujung-ke-Ujung (dari Erebor)
+
+ping 192.218.15.193 -c 3 # Ping Gateway (Throne)
+ping 192.218.15.201 -c 3 # Ping Hub (Amonsul)
+ping 192.218.8.2 -c 3    # Ping Area Kiri (Shadow)
+
+
+Langkah 4: Konfigurasi Area Tengah (Cabang Eregion)
+
+Fokus: Mengkonfigurasi semua node sisanya di bawah Eregion.
+
+Klien Langsung Eregion:
+
+Di Node Mirkwood:
+
+ip -4 addr flush dev eth1; ip route flush cache
+ip addr add 192.218.14.2/25 dev eth1   # Klien di A14
+ip route add default via 192.218.14.1 # Default ke Eregion
+
+
+Di Node Morgul:
+
+ip -4 addr flush dev eth1; ip route flush cache
+ip addr add 192.218.14.3/25 dev eth1   # Klien di A14
+ip route add default via 192.218.14.1 # Default ke Eregion
+
+
+Router-router Area Tengah:
+
+Di Node Numenor:
+
+ip -4 addr flush dev eth0; ip -4 addr flush dev eth1; ip -4 addr flush dev eth2; ip -4 addr flush dev eth3; ip route flush cache
+ip addr add 192.218.15.222/30 dev eth0 # Ke Eregion (A15)
+ip addr add 192.218.15.225/30 dev eth1 # Ke Gudur (A16)
+ip addr add 192.218.15.229/30 dev eth2 # Ke Mordor (A17)
+ip addr add 192.218.4.1/22 dev eth3    # Gateway Switch13 (A18)
+ip route add default via 192.218.15.221 # Default ke Eregion
+ip route add 192.218.14.128/25 via 192.218.15.226 # A19 via Gudur
+ip route add 192.218.15.160/28 via 192.218.15.226 # A20 via Gudur
+ip route add 192.218.15.232/30 via 192.218.15.230 # A21 via Mordor
+ip route add 192.218.10.0/23 via 192.218.15.230   # A22 via Mordor
+ip route add 192.218.12.0/23 via 192.218.15.230   # A23 via Mordor
+
+
+Di Node Gudur:
+
+ip -4 addr flush dev eth0; ip -4 addr flush dev eth1; ip -4 addr flush dev eth2; ip route flush cache
+ip addr add 192.218.15.226/30 dev eth0 # Ke Numenor (A16)
+ip addr add 192.218.14.129/25 dev eth1 # Gateway Switch9 (A19)
+ip addr add 192.218.15.161/28 dev eth2 # Gateway Switch10 (A20)
+ip route add default via 192.218.15.225 # Default ke Numenor
+
+
+Di Node Mordor:
+
+ip -4 addr flush dev eth0; ip -4 addr flush dev eth1; ip route flush cache
+ip addr add 192.218.15.230/30 dev eth0 # Ke Numenor (A17)
+ip addr add 192.218.15.233/30 dev eth1 # Ke Erain (A21)
+ip route add default via 192.218.15.229 # Default ke Numenor
+ip route add 192.218.10.0/23 via 192.218.15.234 # A22 via Erain
+ip route add 192.218.12.0/23 via 192.218.15.234 # A23 via Erain
+
+
+Di Node Erain:
+
+ip -4 addr flush dev eth0; ip -4 addr flush dev eth1; ip -4 addr flush dev eth2; ip route flush cache
+ip addr add 192.218.15.234/30 dev eth0 # Ke Mordor (A21)
+ip addr add 192.218.12.1/23 dev eth1   # Gateway Switch11 (A23)
+ip addr add 192.218.10.1/23 dev eth2   # Gateway Switch12 (A22)
+ip route add default via 192.218.15.233 # Default ke Mordor
+
+
+Klien-klien Area Tengah:
+
+Di Node Arthedain:
+ip -4 addr flush dev eth0; ip route flush cache; ip addr add 192.218.4.2/22 dev eth0; ip route add default via 192.218.4.1
+
+Di Node Mirdain:
+ip -4 addr flush dev eth0; ip route flush cache; ip addr add 192.218.4.3/22 dev eth0; ip route add default via 192.218.4.1
+
+Di Node Palantir:
+ip -4 addr flush dev eth1; ip route flush cache; ip addr add 192.218.14.130/25 dev eth1; ip route add default via 192.218.14.129
+
+Di Node Edhil:
+ip -4 addr flush dev eth2; ip route flush cache; ip addr add 192.218.14.131/25 dev eth2; ip route add default via 192.218.14.129
+
+Di Node IronCrown:
+ip -4 addr flush dev eth0; ip route flush cache; ip addr add 192.218.15.162/28 dev eth0; ip route add default via 192.218.15.161
+
+Di Node Grond:
+ip -4 addr flush dev eth1; ip route flush cache; ip addr add 192.218.15.163/28 dev eth1; ip route add default via 192.218.15.161
+
+Di Node Hobbiton:
+ip -4 addr flush dev eth0; ip route flush cache; ip addr add 192.218.15.164/28 dev eth0; ip route add default via 192.218.15.161
+
+Di Node Melkor (Klien Uji):
+ip -4 addr flush dev eth0; ip route flush cache; ip addr add 192.218.12.2/23 dev eth0; ip route add default via 192.218.12.1
+
+Di Node Khazad:
+ip -4 addr flush dev eth0; ip route flush cache; ip addr add 192.218.12.3/23 dev eth0; ip route add default via 192.218.12.1
+
+Di Node Balrog:
+ip -4 addr flush dev eth0; ip route flush cache; ip addr add 192.218.10.2/23 dev eth0; ip route add default via 192.218.10.1
+
+Di Node Gothmog:
+ip -4 addr flush dev eth0; ip route flush cache; ip addr add 192.218.10.3/23 dev eth0; ip route add default via 192.218.10.1
+
+Di Node Thranduil:
+ip -4 addr flush dev eth0; ip route flush cache; ip addr add 192.218.10.4/23 dev eth0; ip route add default via 192.218.10.1
+
+4B. Pengujian Akhir Area Tengah (dari Melkor)
+
+(PERIKSA BUG GNS3!)
+
+Dari Melkor:
+
+ping 192.218.12.1 -c 3 (Tes Erain. Jika gagal, reset kabel Mordor eth1 <-> Erain eth0)
+
+ping 192.218.15.201 -c 3 (Tes Amonsul)
+
+ping 192.218.8.2 -c 3 (Tes Area Kiri - Shadow)
+
+ping 192.218.15.194 -c 3 (Tes Area Kanan - Erebor)
+
+Langkah 5: Penyelesaian Area Kiri (Klien Sisa)
+
+Fokus: Mengkonfigurasi sisa klien di bawah Valinor dan Valmar.
+
+Di Node Anarion (Klien Uji):
+ip -4 addr flush dev eth1; ip route flush cache; ip addr add 192.218.8.3/23 dev eth1; ip route add default via 192.218.8.1
+
+Di Node Lindon:
+ip -4 addr flush dev eth0; ip route flush cache; ip addr add 192.218.8.4/23 dev eth0; ip route add default via 192.218.8.1
+
+Di Node Doriath:
+ip -4 addr flush dev eth0; ip route flush cache; ip addr add 192.218.15.130/27 dev eth0; ip route add default via 192.218.15.129
+
+Di Node Arnor:
+ip -4 addr flush dev eth0; ip route flush cache; ip addr add 192.218.15.131/27 dev eth0; ip route add default via 192.218.15.129
+
+Di Node Imrahil:
+ip -4 addr flush dev eth0; ip route flush cache; ip addr add 192.218.15.2/26 dev eth0; ip route add default via 192.218.15.1
+
+Di Node Utomno:
+ip -4 addr flush dev eth0; ip route flush cache; ip addr add 192.218.15.3/26 dev eth0; ip route add default via 192.218.15.1
+
+Di Node Gwaith:
+ip -4 addr flush dev eth1; ip route flush cache; ip addr add 192.218.15.4/26 dev eth1; ip route add default via 192.218.15.1
+
+5B. Pengujian Final (dari Anarion)
+
+ping 192.218.15.194 -c 3 # Ping Area Kanan (Erebor)
+ping 192.218.12.2 -c 3   # Ping Area Tengah (Melkor)
+
+
+Jika ini berhasil, seluruh topologi GNS3 Anda SELESAI.
+
+Lampiran: Daftar IP Node (Cheat Sheet Ping)
+
+Area Kiri (Cabang Fornost)
+
+Shadow: 192.218.8.2
+
+Anarion: 192.218.8.3
+
+Lindon: 192.218.8.4
+
+Doriath: 192.218.15.130
+
+Arnor: 192.218.15.131
+
+Imrahil: 192.218.15.2
+
+Utomno: 192.218.15.3
+
+Gwaith: 192.218.15.4
+
+Area Kanan (Cabang Minastir)
+
+Erendis: 192.218.15.66
+
+Elrond: 192.218.15.67
+
+Erebor: 192.218.15.194
+
+Beacon: 192.218.0.2
+
+Silmarils: 192.218.0.3
+
+Area Tengah (Cabang Eregion)
+
+Mirkwood: 192.218.14.2
+
+Morgul: 192.218.14.3
+
+Arthedain: 192.218.4.2
+
+Mirdain: 192.218.4.3
+
+Palantir: 192.218.14.130
+
+Edhil: 192.218.14.131
+
+IronCrown: 192.218.15.162
+
+Grond: 192.218.15.163
+
+Hobbiton: 192.218.15.164
+
+Melkor: 192.218.12.2
+
+Khazad: 192.218.12.3
+
+Balrog: 192.218.10.2
+
+Gothmog: 192.218.10.3
+
+Thranduil: 192.218.10.4
