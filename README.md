@@ -9,6 +9,12 @@
 
 <img width="1573" height="1086" alt="VLSM" src="https://github.com/user-attachments/assets/8e261e74-a2b0-446b-ad95-d844db1276e0" />
 
+### VLSM Tree
+
+![WhatsApp Image 2025-11-18 at 00 17 12_971dc94a](https://github.com/user-attachments/assets/f1e7dab1-60ca-4ea9-a5cf-a27717a2f733)
+
+Pendekatan subnetting yang digunakan berhasil mengidentifikasi 23 segmen jaringan (subnet). Dari total ruang alamat, 3.219 IP telah dialokasikan, menyisakan 4.030 IP yang dapat digunakan di masa mendatang. Alokasi terbesar didasarkan pada kebutuhan host tertinggi, yang kemudian dikonsolidasikan dalam supernet dengan prefix /20.
+
 ---
 
 ## CIDR
